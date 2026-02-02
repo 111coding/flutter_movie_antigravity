@@ -1,9 +1,10 @@
 import 'dart:convert';
+import 'package:flutter_movie/data/source/movie_data_source.dart';
 import 'package:http/http.dart' as http;
 import '../dto/movie_dto.dart';
 import '../dto/movie_response_dto.dart';
 
-class TmdbDataSource {
+class TmdbDataSource implements MovieDataSource {
   static const String _baseUrl = 'https://api.themoviedb.org/3/movie';
   // Note: Ideally, this token should be stored securely (e.g., .env),
   // but for this task, we'll keep it here as per instructions to follow CURL.md directly.
@@ -19,6 +20,7 @@ class TmdbDataSource {
     'accept': 'application/json',
   };
 
+  @override
   Future<MovieResponseDto> getNowPlaying() async {
     final response = await _client.get(
       Uri.parse('$_baseUrl/now_playing?language=ko-KR&page=1'),
@@ -32,6 +34,7 @@ class TmdbDataSource {
     }
   }
 
+  @override
   Future<MovieResponseDto> getPopular() async {
     final response = await _client.get(
       Uri.parse('$_baseUrl/popular?language=ko-KR&page=1'),
@@ -45,6 +48,7 @@ class TmdbDataSource {
     }
   }
 
+  @override
   Future<MovieResponseDto> getTopRated() async {
     final response = await _client.get(
       Uri.parse('$_baseUrl/top_rated?language=ko-KR&page=1'),
@@ -58,6 +62,7 @@ class TmdbDataSource {
     }
   }
 
+  @override
   Future<MovieResponseDto> getUpcoming() async {
     final response = await _client.get(
       Uri.parse('$_baseUrl/upcoming?language=ko-KR&page=1'),
@@ -71,6 +76,7 @@ class TmdbDataSource {
     }
   }
 
+  @override
   Future<MovieDto> getMovieDetail(int movieId) async {
     final response = await _client.get(
       Uri.parse('$_baseUrl/$movieId?language=ko-KR'),
